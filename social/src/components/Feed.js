@@ -5,8 +5,8 @@ const Feed = ({ posts }) => {
 
     return (
         <>
-            {posts.map((post, index) => (
-                <Post index={index} {...post} />
+            {posts?.length > 0 && posts.map((post, index) => (
+                <Post key={index} {...post} />
             ))}
         </>
     )

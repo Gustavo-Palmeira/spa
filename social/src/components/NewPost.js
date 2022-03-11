@@ -1,6 +1,8 @@
-import React, { useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
+import { PostContext } from "../App"
 
-const NewPost = ({ posts, setPosts, username }) => {
+const NewPost = ({ username }) => {
+    const dispatch = useContext(PostContext)
     const [content, setContent] = useState()
     const image = useRef()
 
@@ -9,14 +11,15 @@ const NewPost = ({ posts, setPosts, username }) => {
     }
 
     const handleClickNewPost = () => {
-        setPosts([{
+        const newPost = {
             content: content,
             image: image.current.files[0],
             username: username,
             likes: 0,
             date: new Date()
-        }, ...posts])
+        }
 
+        dispatch({ type: "CREATE_POST", payload: { newPost } })
         setContent("")
         image.current.value = ""
     }
