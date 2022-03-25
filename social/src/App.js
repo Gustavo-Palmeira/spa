@@ -1,24 +1,18 @@
-import React, { createContext, useReducer, useState } from "react"
-import Header from "./components/Header"
-import NewPost from "./components/NewPost"
-import Feed from "./components/Feed"
-import { reducer } from "./reducer"
-
-export const UserContext = createContext()
-export const PostContext = createContext()
+import React from "react"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Explorer from "./pages/Explorer"
+import Feed from "./pages/Feed"
+import NotFound from "./pages/NotFound"
 
 const App = () => {
-    const [state, dispatch] = useReducer(reducer, { posts: [] })
-    const [username, setUsername] = useState("Gustavo Palmeira")
-
     return (
-        <UserContext.Provider value={username}>
-            <Header username={username} setUsername={setUsername} />
-            <PostContext.Provider value={dispatch}>
-                {username && <NewPost username={username} />}
-                <Feed posts={state.posts} />
-            </PostContext.Provider>
-        </UserContext.Provider>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Feed />} />
+                <Route path="/explorer" element={<Explorer />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </BrowserRouter>
     )
 }
 
