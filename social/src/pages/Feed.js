@@ -1,10 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import Layout from "../layouts/Layouts"
 import { getPost } from '../data'
 import Post from "../components/feed/post"
 
+import { UserContext } from "../auth"
+
 const Feed = () => {
     const posts = [getPost(), getPost(), getPost()]
+    const { currentUser } = useContext(UserContext)
+    console.log(currentUser,' current')
 
     return (
         <Layout title="📰 Feed">

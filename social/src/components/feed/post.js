@@ -20,7 +20,7 @@ const Post = ({ post }) => {
                     <span className="d-block fw-bold">{ post.likes === 1 ? `${post.likes} like` : `${post.likes} likes` }</span>
                     <span className="fw-bold">{post.user.name}: </span>
                     <span>{post.text}</span>
-                    { post.comments.map(comment => <Comment comment={comment} />) }
+                    { post.comments.map(comment => <Comment key={comment} comment={comment} />) }
                 </div>
             </div> 
         </article>
