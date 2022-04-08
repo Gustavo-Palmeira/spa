@@ -8,12 +8,11 @@ import { UserContext } from "../auth"
 const Feed = () => {
     const posts = [getPost(), getPost(), getPost()]
     const { currentUser } = useContext(UserContext)
-    console.log(currentUser,' current')
 
     return (
         <Layout title="📰 Feed">
             <div className="row">
-                <div className="col-6 mx-auto">
+                <div className="col-12 col-lg-8 mx-auto">
                     { posts.map(post => <Post key={post.id} post={post} />) }
                 </div>
             </div>

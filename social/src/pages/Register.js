@@ -1,29 +1,29 @@
-import React, { useContext, useState } from "react"
-import Layout from "../layouts/Layouts"
+import React, { useContext, useState } from "react";
+import Layout from "../layouts/Layouts";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useLazyQuery } from "@apollo/client"
-import { GET_LOGIN } from "../graphql/login/query"
-import { UserContext } from "../auth"
-import { Link, useNavigate } from "react-router-dom"
+import { REGISTER } from "../graphql/login/mutation";
+import { UserContext } from "../auth";
+import { useMutation } from "@apollo/client";
 
-const Login = () => {
-  const navigate = useNavigate()
-  const [username, setUsername] = useState("gustavopalmeira")
-  const [password, setPassword] = useState("123456")
-  const { setCurrentUser } = useContext(UserContext)
-  const [loadLogin] = useLazyQuery(GET_LOGIN)
+const Register = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { setCurrentUser } = useContext(UserContext);
+  const [register] = useMutation(REGISTER);
 
-  const handleLogin = async () => {
-    const { data: { user } } = await loadLogin({ variables: { username } })
-    if (user[0].password === btoa(password)) {
-      const { id, name, username } = user[0]
-      setCurrentUser({ id, name, username })
-      navigate('/')
-    }
-  }
+  const handleRegister = async () => {
+    const { data } = await register({
+      variables: { name, username, password: btoa(password) },
+    });
+    setCurrentUser({ ...data.insert_user.returning[0] })
+    navigate('/')
+  };
 
   return (
-    <Layout title="Login">
+    <Layout title="Register">
       <div className="row">
         <div className="col-10 col-lg-5 d-none d-lg-flex justify-content-end align-itens-center">
           <img src="/img/iphone.png" alt="Iphone" />
@@ -34,10 +34,17 @@ const Login = () => {
               Senacgram
             </h2>
             <input
+              value={name}
+              onChange={({ target }) => setName(target.value)}
+              type="text"
+              className="form-control mt-4"
+              placeholder="Nome"
+            />
+            <input
               value={username}
               onChange={({ target }) => setUsername(target.value)}
               type="text"
-              className="form-control mt-4"
+              className="form-control mt-2"
               placeholder="Usuário"
             />
             <input
@@ -47,10 +54,15 @@ const Login = () => {
               className="form-control mt-2"
               placeholder="Senha"
             />
-            <button className="btn btn-primary w-100 mt-4" onClick={() => handleLogin()}>Logar</button>
+            <button
+              className="btn btn-primary w-100 mt-4"
+              onClick={() => handleRegister()}
+            >
+              Registrar
+            </button>
             <hr className="my-5" />
             <div className="text-center">
-              <p>Não tem uma conta? <Link to="/register">Cadastre-se</Link></p>
+              <p>Já possui conta? <Link to="/login">Entrar</Link></p>
             </div>
             <div className="text-center">
               <p>Obtenha o aplicativo</p>
@@ -67,7 +79,7 @@ const Login = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default Login
+export default Register;

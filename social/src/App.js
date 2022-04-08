@@ -1,24 +1,26 @@
-import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Explorer from "./pages/Explorer";
-import Feed from "./pages/Feed";
-import NotFound from "./pages/NotFound";
+import React, { useContext } from "react"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import Explorer from "./pages/Explorer"
+import Feed from "./pages/Feed"
+import NotFound from "./pages/NotFound"
+import Register from "./pages/Register"
 
-import { UserContext } from "./auth";
-import Login from "./pages/Login";
+import { UserContext } from "./auth"
+import Login from "./pages/Login"
 
 const App = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext)
 
   if (!currentUser) {
     return (
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
-    );
+    )
   }
 
   return (
@@ -29,7 +31,7 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-export default App;
+export default App
